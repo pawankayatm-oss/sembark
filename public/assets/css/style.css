@@ -1,0 +1,9 @@
+label.error{
+    color:red !important;
+}
+span.error{
+    color:red !important;
+}
+.remove-sidebar{
+    margin-left: 0px;
+}
