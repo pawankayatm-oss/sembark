@@ -10,7 +10,7 @@
     <meta property="og:url" content="http://pratikborsadiya.in/blog/vali-admin">
     <meta property="og:image" content="http://pratikborsadiya.in/blog/vali-admin/hero-social.png">
     <meta property="og:description" content="Vali is a responsive and free admin theme built with Bootstrap 5, SASS and PUG.js. It's fully customizable and modular.">
-    <title>Form Samples - Vali Admin</title>
+    <title>Sembark</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -32,7 +32,7 @@
         <li class="dropdown"><a class="app-nav__item" href="#" data-bs-toggle="dropdown" aria-label="Open Profile Menu"><i class="bi bi-person fs-4"></i></a>
           <ul class="dropdown-menu settings-menu dropdown-menu-right">
             <li>
-              <form method="POST" action="{{ route('logout') }}" style="display:inline-block;"> 
+              <form method="POST" action="{{ route('logout') }}" style="display:inline-block;">
                 @csrf
                 <button type="submit" class="dropdown-item"><i class="bi bi-box-arrow-right me-2 fs-5"></i> Logout</button>
             </form>

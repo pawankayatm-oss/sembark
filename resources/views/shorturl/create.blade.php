@@ -1,14 +1,15 @@
+
 @extends('layouts.app')
 
 @section('main-section')
 <main class="app-content">
     <div class="app-title">
       <div>
-        <h1><i class="bi bi-ui-checks"></i> Company</h1>
+        <h1><i class="bi bi-ui-checks"></i> Short Url</h1>
       </div>
 
       <ul class="app-breadcrumb breadcrumb side">
-        <a href="{{route('companies.index')}}" class="btn btn-primary">Company List</a>
+        <a href="{{route('shorturl.index')}}" class="btn btn-primary">ShortUrls List</a>
       </ul>
 
     </div>
@@ -16,28 +17,21 @@
         <div class="col-md-3"></div>
       <div class="col-md-6">
         <div class="tile">
-          <h3 class="tile-title">Add Company</h3>
+          <h3 class="tile-title">Create ShortUrl</h3>
+
 
             <div class="alert alert-success alert-dismissible fade hide" id="successMessage" role="alert"></div>
             <div class="alert alert-danger alert-dismissible fade hide" id="errorMessage" role="alert"></div>
 
 
           <div class="tile-body">
-            <form action="{{ route('companies.store') }}" method="POST" id="companyForm">
-
+            <form action="{{ route('shorturl.store') }}" method="POST" id="shortUrlForm">
                 @csrf
-
-              <div class="mb-3">
-                <label class="form-label">Company Name <span>*</span></label>
-                <input class="form-control @error('name') is-invalid @enderror" name="name" type="text" placeholder="Enter company name" value="{{ old('name') }}">
-                <div class="invalid-feedback"></div>
-              </div>
-
-              <div class="mb-3">
-                <label class="form-label">URL</label>
-                <input class="form-control @error('company_website_url') is-invalid @enderror" type="text" name="company_website_url" placeholder="Enter website url"  value="{{ old('company_website_url') }}">
-                <div class="invalid-feedback"></div>
-              </div>
+                <div class="mb-3">
+                    <label class="form-label">URL</label>
+                    <input class="form-control @error('original_url') is-invalid @enderror" type="text" name="original_url" placeholder="Enter url"  value="{{ old('original_url') }}">
+                    <div class="invalid-feedback"></div>
+                </div>
 
               <div class="tile-footer">
                 <button class="btn btn-primary" type="submit" id="submitBtn"><i class="bi bi-check-circle-fill me-2"></i>Submit</button>
@@ -60,25 +54,25 @@
 
 @section('scripts')
 <script>
-  $(function () {
 
-      $('#companyForm').validate({
+$(function () {
 
-          rules: {
-              name: "required",
-              company_website_url: {
-                  required: false,
-                  url: true
-              }
-          },
+    $('#shortUrlForm').validate({
 
-          messages: {
-              name: "Please enter company name",
-              company_website_url: {
-                  required: "Please enter website URL",
-                  url: "Please enter valid URL"
-              }
-          },
+        rules: {
+            original_url: {
+                required: true,
+                url: true
+            }
+        },
+
+        messages: {
+            original_url: {
+                required: "The url field is required.",
+                url: "The url field must be a valid URL."
+            }
+        },
+
         submitHandler: function(form) {
 
             $('#successMessage,#errorMessage').removeClass('show');
@@ -87,7 +81,7 @@
             $('.invalid-feedback').html('');
 
             $.ajax({
-                url: "{{ route('companies.store') }}",
+                url: "{{ route('shorturl.store') }}",
                 type: "POST",
                 data: $(form).serialize(),
 
@@ -126,8 +120,9 @@
 
         }
 
-      });
+    });
 
-  });
-  </script>
+});
+
+</script>
 @endsection

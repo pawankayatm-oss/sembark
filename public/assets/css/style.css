@@ -7,3 +7,6 @@ span.error{
 .remove-sidebar{
     margin-left: 0px;
 }
+.hide{
+    display:none;
+}

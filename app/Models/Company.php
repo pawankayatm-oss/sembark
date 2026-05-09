@@ -3,7 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Models\User;
+use App\Models\{User,ShortUrl};
+
 class Company extends Model
 {
     //
@@ -17,4 +18,9 @@ class Company extends Model
     {
         return $this->hasMany(User::class);
     }
+
+    public function shortUrls(){
+        return $this->hasMany(ShortUrl::class);
+    }
+
 }

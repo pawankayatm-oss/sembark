@@ -9,7 +9,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
 
-use App\Models\Company;
+use App\Models\{Company,ShortUrl};
 class User extends Authenticatable
 {
     /** @use HasFactory<UserFactory> */
@@ -56,6 +56,11 @@ class User extends Authenticatable
     public function company()
     {
         return $this->belongsTo(Company::class);
-    }   
+    }
+
+
+    public function shortUrls(){
+        return $this->hasMany(ShortUrl::class);
+    }
 
 }

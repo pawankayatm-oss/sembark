@@ -7,12 +7,14 @@
     <div class="app-title">
 
         <div>
-            <h1><i class="bi bi-table"></i> Invitation List</h1>
+            <h1><i class="bi bi-table"></i> ShortUrls List</h1>
         </div>
 
+            @role('Admin|Member')
         <ul class="app-breadcrumb breadcrumb side">
-            <a href="{{route('invitation.create')}}" class="btn btn-primary">Add Invitee</a>
+            <a href="{{route('shorturl.create')}}" class="btn btn-primary">Add ShortUrl</a>
           </ul>
+          @endrole
     </div>
 
     <div class="row">
@@ -22,27 +24,31 @@
             <div class="tile">
 
                 <div class="tile-body">
-                    @if(session('invite-success'))
+
+                    @if(session('success'))
                     <div class="alert alert-success alert-dismissible fade show" role="alert">
-                        {{ session('invite-success') }}
-                        <br>
-                        <small>
-                            <b>Note:</b> If you haven't received the email, please contact the admin or use the invitation link manually.
-                        </small>
+                        {{ session('success') }}
+
                         <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                     </div>
-                  @endif
+                    @endif
+
+                    @session('error')
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        {{ session('error') }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                    @endsession
+
                     <div class="table-responsive">
 
-                        <table class="table table-hover table-bordered" id="invitation_list">
+                        <table class="table table-hover table-bordered" id="shorturl_list">
+
                             <thead>
                                 <tr>
                                     <th>ID</th>
-                                    <th>Name</th>
-                                    <th>Email</th>
-                                    <th>Role</th>
-                                    <th>Status</th>
-                                    <th>Invitee Url</th>
+                                    <th>Original Url</th>
+                                    <th>Short Url</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -67,12 +73,25 @@
 @endsection
 
 @section('scripts')
+<script>
+$(document).on('click', '.copy-btn', function () {
+
+     var shorturl = $(this).data('copy');
+     var createShortUrlWithCode = "{{url('/u')}}"+'/'+shorturl;
+    var $temp = $("<input>");
+    $("body").append($temp);
+    $temp.val(createShortUrlWithCode).select();
+    document.execCommand("copy");
+    $temp.remove();
+    alert('Url Copied');
+});
+</script>
 
 <script>
-    $('#invitation_list').DataTable({
+    $('#shorturl_list').DataTable({
         processing: true,
         serverSide: true,
-        ajax: "{{ route('invitation.index') }}",
+        ajax: "{{ route('shorturl.index') }}",
 
         columns: [
             {
@@ -82,24 +101,12 @@
                 searchable: false
             },
             {
-                data: 'name',
-                name: 'name'
-            },
-             {
-                data: 'email',
-                name: 'email'
-            },
-             {
-                data: 'role',
-                name: 'role'
+                data: 'original_url',
+                name: 'original_url'
             },
             {
-                data: 'status',
-                name: 'status'
-            },
-            {
-                data: 'invitee_url',
-                name: 'invitee_url'
+                data: 'short_url',
+                name: 'short_url'
             },
             {
                 data: 'action',
@@ -110,4 +117,5 @@
         ]
     });
 </script>
+
 @endsection

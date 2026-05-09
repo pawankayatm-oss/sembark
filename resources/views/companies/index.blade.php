@@ -26,8 +26,7 @@
                     <div class="table-responsive">
 
                         <table
-                            class="table table-hover table-bordered"
-                            id="companies_list">
+                            class="table table-hover table-bordered" id="companies_list">
 
                             <thead>
 
@@ -37,49 +36,12 @@
                                     <th>Name</th>
                                     <th>URL</th>
                                     <th>Total Users</th>
-                                    <th>Created At</th>
                                     <th>Action</th>
                                 </tr>
 
                             </thead>
 
                             <tbody>
-
-                                @forelse($companies as $key => $company)
-
-                                    <tr>
-
-                                        <td>{{ ($key+1) }}</td>
-
-                                        <td>{{ $company->name }}</td>
-
-                                        <td><a href="{{$company->company_website_url}}" target="_blank">{{ $company->company_website_url }}</a></td>
-                                        <td>{{ $company->users_count }}</td>
-                                        <td>
-                                            {{ $company->created_at}}
-                                        </td>
-                                        <td>
-                                            <div class="btn-group">
-                                                <a class="btn btn-primary" href="{{ route('companies.edit', $company->id) }}"><i class="bi bi-pencil-square fs-5"></i></a>
-                                                
-                                            </div>
-                                        </td>
-                                    </tr>
-
-                                @empty
-
-                                    <tr>
-
-                                        <td colspan="4" class="text-center">
-
-                                            No companies found.
-
-                                        </td>
-
-                                    </tr>
-
-                                @endforelse
-
                             </tbody>
 
                         </table>
@@ -99,5 +61,40 @@
 @endsection
 
 @section('scripts')
-<script type="text/javascript">$('#companies_list').DataTable();</script>
+
+<script>
+    $('#companies_list').DataTable({
+        processing: true,
+        serverSide: true,
+        ajax: "{{ route('companies.index') }}",
+
+        columns: [
+            {
+                data: 'DT_RowIndex',
+                name: 'DT_RowIndex',
+                orderable: false,
+                searchable: false
+            },
+            {
+                data: 'name',
+                name: 'name'
+            },
+            {
+                data: 'company_website_url',
+                name: 'company_website_url'
+            },
+            {
+                data: 'users_count',
+                name: 'users_count'
+            },
+            {
+                data: 'action',
+                name: 'action',
+                orderable: false,
+                searchable: false
+            }
+        ]
+    });
+</script>
+
 @endsection
