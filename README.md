@@ -149,6 +149,8 @@ php artisan queue:failed
 * Vite
 
 ---
+# AI Tool
+ - README.md file created with the help of ChatGPT.
 
 # Notes
 
