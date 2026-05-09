@@ -6,7 +6,7 @@
 
 Before setup, make sure you have installed:
 
-* PHP >= 8.x
+* PHP >= 8.3
 * Composer
 * Node.js & NPM
 * MySQL
@@ -45,9 +45,10 @@ composer install
 
 ```bash
 npm install
+```
+```bash
 npm run dev
 ```
-
 ---
 
 ## 4. Generate Application Key
@@ -67,7 +68,11 @@ DB_DATABASE=your_database_name
 DB_USERNAME=your_database_user
 DB_PASSWORD=your_database_password
 ```
+## Clear Cache
 
+```bash
+php artisan optimize
+```
 ---
 
 ## 6. Run Database Migration
