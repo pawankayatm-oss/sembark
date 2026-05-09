@@ -3,18 +3,19 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Validate;
-use App\Models\User;
 use App\Models\Company;
-use DB;
 use Illuminate\Support\Facades\Log;
 use Yajra\DataTables\Facades\DataTables;
+
 class CompanyController extends Controller
 {
     //
     public function index(Request $request){
+
         if($request->ajax()){
+
             $companies = Company::withCount('users')->latest();
+
             return DataTables::of($companies)
             ->addIndexColumn()
             ->editColumn('name',function($row){
@@ -35,7 +36,6 @@ class CompanyController extends Controller
             ->make(true);
         }
 
-
         return view('companies.index');
     }
 
@@ -44,6 +44,7 @@ class CompanyController extends Controller
     }
 
     public function store(Request $request){
+
         try {
             $request->validate([
                 'name' => 'required|max:255',
@@ -55,27 +56,29 @@ class CompanyController extends Controller
                 'company_website_url' => $request->company_website_url,
             ]);
 
-             return response()->json([
+            return response()->json([
                         'status' => true,
                         'message' => 'Company created successfully'
-                    ]);
+            ]);
+
         }catch(\Exception $e){
-                Log::error('Error: ' . $e->getMessage());
-                return response()->json([
-                    'status' => false,
-                    'message' => 'Error: ' . $e->getMessage()
-                ]);
+            Log::error('Error: ' . $e->getMessage());
+            return response()->json([
+                'status' => false,
+                'message' => 'Error: ' . $e->getMessage()
+            ]);
         }
+
     }
 
 
-    public function edit(Company $company)
-        {
+    public function edit(Company $company) {
             return view('companies.edit', compact('company'));
-        }
+    }
 
-        public function update(Request $request, Company $company)
-        {
+    public function update(Request $request, Company $company){
+
+        try {
             $request->validate([
                 'name' => 'required|max:255',
                 'company_website_url' => 'nullable|url|max:255',
@@ -86,8 +89,18 @@ class CompanyController extends Controller
                 'company_website_url' => $request->company_website_url,
             ]);
 
-            return redirect()
-                ->route('companies.index')
-                ->with('success', 'Company updated successfully');
+             return response()->json([
+                        'status' => true,
+                        'message' => 'Company updated successfully'
+            ]);
+
+        }catch(\Exception $e){
+            Log::error('Error: ' . $e->getMessage());
+            return response()->json([
+                'status' => false,
+                'message' => 'Error: ' . $e->getMessage()
+            ]);
         }
+
+    }
 }

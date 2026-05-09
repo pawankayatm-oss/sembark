@@ -23,8 +23,10 @@ class InvitationController extends Controller
     {
         //
         if($request->ajax()){
+
             $auth = auth()->user();
             $authId = $auth->id;
+
             if ($auth->hasRole('SuperAdmin')) {
                 $invitation_list = Invitation::select('name','email','role','token','accept_status')->get();
             }else{
@@ -56,12 +58,7 @@ class InvitationController extends Controller
             })
             ->addColumn('action',function($row){
                 $shareBtn = '';
-
-                        $shareBtn = '<a href="'.url('/accept-invitation/'.$row->token).'" class="btn btn-primary btn-sm" target="_blank">
-                                                <i class="bi bi-share fs-5"></i>
-                                            </a>';
-
-
+                $shareBtn = '<a href="'.url('/accept-invitation/'.$row->token).'" class="btn btn-primary btn-sm" target="_blank"> <i class="bi bi-share fs-5"></i></a>';
                 return $shareBtn;
             })
             ->rawColumns([
@@ -69,7 +66,6 @@ class InvitationController extends Controller
             ])
             ->make();
         }
-
 
         return view('invitation.index');
     }
@@ -81,18 +77,11 @@ class InvitationController extends Controller
     {
         //
         $auth = auth()->user();
-
-        // getting all list only for superadmin role
         if ($auth->hasRole('SuperAdmin')) {
             $companies = Company::all();
-
             $roles = ['Admin'];
         }else{
-            $companies = Company::where(
-                'id',
-                $auth->company_id
-            )->get();
-
+            $companies = Company::where('id',$auth->company_id)->get();
             $roles = ['Admin', 'Member'];
         }
         return view('invitation.create',compact('companies', 'roles'));
@@ -123,6 +112,7 @@ class InvitationController extends Controller
                         ]);
                         $companyId = $auth->company_id;
                     }
+
                     $invitee = Invitation::create([
                         'company_id' => $companyId,
                         'name'       => $request->name,
@@ -146,8 +136,7 @@ class InvitationController extends Controller
                     'status' => false,
                     'message' => 'Error: ' . $e->getMessage()
                 ]);
-
-        }
+            }
     }
     /**
      * Display the specified resource.
@@ -182,7 +171,8 @@ class InvitationController extends Controller
         //
     }
 
-    public function accept($token){
+    public function accept_invitation($token){
+
         $invitation = Invitation::where('token', $token)
         ->where('accept_status',0)
         ->firstOrFail();
@@ -190,7 +180,8 @@ class InvitationController extends Controller
         return view('invitation.accept-invitation', compact('invitation'));
     }
 
-    public function complete(Request $request){
+    public function complete_invitation(Request $request){
+
         $request->validate([
             'token' => 'required',
             'password' => 'required|min:6|confirmed',

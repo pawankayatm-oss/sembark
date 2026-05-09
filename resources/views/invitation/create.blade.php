@@ -31,7 +31,7 @@
                 </div>
             @endif
 
-            <form action="{{ route('invitation.store') }}" method="POST" id="userForm">
+            <form method="POST" id="userForm">
                 @method('post')
                 @csrf
 
@@ -64,6 +64,8 @@
             <div class="mb-3">
               <label class="form-label">Role <span class="error">*</span></label>
               <select required class="form-control @error('role') is-invalid @enderror" id="role" name="role" @error('role') is-invalid @enderror>
+                    <option value="" selected disabled>--SELECT--</option>
+
                 @foreach($roles as $role)
                     <option value="{{ $role }}">
                         {{ $role }}

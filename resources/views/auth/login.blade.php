@@ -1,3 +1,5 @@
+    <link rel="stylesheet" type="text/css" href="{{asset('assets/css/main.css')}}">
+
 <x-guest-layout>
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
@@ -5,7 +7,6 @@
     @if(session('success'))
     <div class="alert alert-success alert-dismissible fade show" role="alert">
         {{ session('success') }}
-        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
     </div>
     @endif
 

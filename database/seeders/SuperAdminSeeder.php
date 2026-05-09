@@ -19,11 +19,11 @@ class SuperAdminSeeder extends Seeder
                 'name' => 'Super Admin',
                 'email' => 'superadmin@sembark.com',
                 'email_verified_at' => now(),
-                'password' => Hash::make('1234567890'),
+                'password' => Hash::make('sembark@123456'),
             ]);
-    
+
             $user->assignRole('SuperAdmin');
         }
-        
+
     }
 }

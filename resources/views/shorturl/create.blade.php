@@ -25,7 +25,7 @@
 
 
           <div class="tile-body">
-            <form action="{{ route('shorturl.store') }}" method="POST" id="shortUrlForm">
+            <form method="POST" id="shortUrlForm">
                 @csrf
                 <div class="mb-3">
                     <label class="form-label">URL</label>

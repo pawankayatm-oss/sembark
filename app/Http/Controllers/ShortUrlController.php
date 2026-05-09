@@ -6,6 +6,7 @@ use App\Models\ShortUrl;
 use Illuminate\Http\Request;
 use Str;
 use Yajra\DataTables\Facades\DataTables;
+
 class ShortUrlController extends Controller
 {
     /**
@@ -16,15 +17,22 @@ class ShortUrlController extends Controller
 
 
         if($request->ajax()){
-            //
+
             $auth = auth()->user();
             $authId = auth()->user()->id;
+
             if ($auth->hasRole('SuperAdmin')) {
                 $shorturls_list = ShortUrl::select('id','original_url','short_url')->get();
-            }else{
+            }elseif($auth->hasRole('Admin')) {
                 $companyId = auth()->user()->company_id;
                 $shorturls_list = ShortUrl::select('id','original_url','short_url')
                 //->where('user_id',$authId)
+                ->where('company_id',$companyId)
+                ->get();
+            }else{
+                 $companyId = auth()->user()->company_id;
+                 $shorturls_list = ShortUrl::select('id','original_url','short_url')
+                ->where('user_id',$authId)
                 ->where('company_id',$companyId)
                 ->get();
             }
@@ -45,6 +53,7 @@ class ShortUrlController extends Controller
                                                 </div>';
 
                 $trashbtn = '';
+
                 if(auth()->user()->hasRole(['Admin','Member'])){
                 $trashbtn = '<div class="btn-group"><form class="" action="'.route('shorturl.destroy',$row->id).'" method="POST">
                                                         '.csrf_field().'
@@ -59,12 +68,11 @@ class ShortUrlController extends Controller
                 return $copybtn.' '.$trashbtn;
             })
             ->rawColumns([
-                'original_url',
-                'short_url',
-                'action'
+                'original_url','short_url','action'
             ])->make(true);
 
         }
+
         return view('shorturl.index');
     }
 
@@ -89,6 +97,7 @@ class ShortUrlController extends Controller
         ]);
 
         $shortUrl = Str::random(8);
+
         $create_shortUrl = ShortUrl::create([
             'company_id' => $auth->company_id,
             'user_id' =>  $auth->id,
@@ -133,8 +142,6 @@ class ShortUrlController extends Controller
      */
     public function destroy($id)
     {
-        //
-
         try{
             $shorturl = ShortUrl::findorfail($id);
             $shorturl->delete();
@@ -145,6 +152,7 @@ class ShortUrlController extends Controller
     }
 
     public function openShortCode($code){
+
       $checkCodeExit = ShortUrl::where('short_url', $code)->firstOrFail();
       //echo $checkCodeExit->original_url
       return redirect()->away($checkCodeExit->original_url);

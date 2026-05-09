@@ -20,6 +20,27 @@
             </div>
         @endrole
 
+        @role('SuperAdmin|Admin')
+            <div class="col-md-6 col-lg-3">
+                <div class="widget-small primary coloured-icon"><i class="icon bi bi-people fs-1"></i>
+                <div class="info">
+                    <h4>Invited Users</h4>
+                    <p><b>{{ $totalInvitedUsrs }}</b></p>
+                </div>
+                </div>
+            </div>
+        @endrole
+
+
+            <div class="col-md-6 col-lg-3">
+                <div class="widget-small primary coloured-icon"><i class="icon bi bi-people fs-1"></i>
+                <div class="info">
+                    <h4>Short Urls</h4>
+                    <p><b>{{ $totalShortUrls }}</b></p>
+                </div>
+                </div>
+            </div>
+
     </div>
 
   </main>

@@ -23,7 +23,7 @@
 
 
           <div class="tile-body">
-            <form action="{{ route('companies.store') }}" method="POST" id="companyForm">
+            <form method="POST" id="companyForm">
 
                 @csrf
 

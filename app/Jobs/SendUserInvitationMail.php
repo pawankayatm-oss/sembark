@@ -27,6 +27,6 @@ class SendUserInvitationMail implements ShouldQueue
     public function handle(): void
     {
         //
-        Mail::to($invitee->email)->send(new UserCredentialMail($invitee));
+        Mail::to($inviteeUserDetail->email)->send(new UserCredentialMail($inviteeUserDetail));
     }
 }
